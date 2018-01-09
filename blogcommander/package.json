@@ -1,0 +1,23 @@
+{
+  "name": "blogcommander",
+  "version": "1.0.0",
+  "description": "Backendapp for the Magiconastick admins to administrate blogposts",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MagicOnAStick/website.git"
+  },
+  "author": "Vincyyy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MagicOnAStick/website/issues"
+  },
+  "homepage": "https://github.com/MagicOnAStick/website#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "pug": "^2.0.0-rc.4"
+  }
+}
