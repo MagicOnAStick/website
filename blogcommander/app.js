@@ -2,6 +2,8 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+//express module for parsing html/json bodies
+const bodyParser = require('body-parser');
 
 // connect to db
 mongoose.connect("mongodb://localhost/blogcommander");
@@ -26,6 +28,12 @@ let Blogpost = require('./models/blogpost');
 app.set('views',path.join(__dirname, 'views'));
 app.set('view engine','pug');
 
+//parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({extend:false}));
+//parse application/json
+app.use(bodyParser.json());
+
+
 // home route
 app.get("/",(req,res)=>{
     let blogposts = Blogpost.find({},(err, blogposts)=>{
@@ -41,12 +49,29 @@ app.get("/",(req,res)=>{
 });
 
 // add blogposts
-app.get("/blogposts/add_blogpost",(req,res)=>{
+app.get("/blogposts/add",(req,res)=>{
     res.render('add_blogpost',{
         title: 'Add Blogpost'
     });
 });
 
+// add submit POST Route
+app.post("/blogposts/add",(req,res)=>{
+    let blogpost = new Blogpost();
+    blogpost.title = req.body.title;
+    blogpost.author = req.body.author;
+    blogpost.body = req.body.body;
+    
+    blogpost.save((err)=>{
+        if (err) {
+            console.log(err);
+            return;
+        }
+        else{
+            res.redirect("/");
+        }
+    });
+});
 
 // start server
 app.listen(3000,()=>{
