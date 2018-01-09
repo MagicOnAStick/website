@@ -2,3 +2,7 @@ extends layout
 
 block content
     h1 #{title}
+    ul
+        each blogpost, i in blogposts
+            //- '=' writes the variable
+            li= blogpost.title
