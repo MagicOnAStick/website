@@ -2,7 +2,7 @@ extends layout
 
 block content
     h1 #{title}
-    ul
+    ul.list-group
         each blogpost, i in blogposts
             //- '=' writes the variable
-            li= blogpost.title
+            li.list-group-item= blogpost.title
