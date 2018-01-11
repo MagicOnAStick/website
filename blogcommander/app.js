@@ -32,7 +32,7 @@ app.set('view engine','pug');
 app.use(bodyParser.urlencoded({extend:false}));
 //parse application/json
 app.use(bodyParser.json());
-//set public folder
+//set/add public folder
 app.use(express.static(path.join(__dirname,'public')));
 
 // home route
@@ -116,6 +116,10 @@ app.get('/blogpost/edit/:id',(req,res)=>{
             title: 'Edit Blogpost'
         });
     }); 
+});
+
+app.delete('/blogpost/:id',(req,res)=>{
+
 });
 
 // start server
