@@ -119,7 +119,13 @@ app.get('/blogpost/edit/:id',(req,res)=>{
 });
 
 app.delete('/blogpost/:id',(req,res)=>{
-
+    let query = {_id: req.params.id};
+    //use model to delete
+    Blogpost.remove(query,(err)=>{
+        console.log(err);
+    });
+    //request from main.js -> send response- defaultcode = 200
+    res.send("Successfully deleted Blogpost");
 });
 
 // start server
