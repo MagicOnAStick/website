@@ -4,9 +4,25 @@ html
         title Blogcommander
         link(rel="stylesheet", href="/bower_components/boostrap/dist/css/bootstrap.css")
     body
+        nav.navbar.navbar-expand-lg.navbar-dark.bg-primary.mb-5
+            a.navbar-brand(href='/') Blogcommander
+            button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarNav', aria-controls='navbarNav', aria-expanded='false', aria-label='Toggle navigation')
+                span.navbar-toggler-icon
+            #navbarNav.collapse.navbar-collapse
+                ul.navbar-nav
+                    li.nav-item.active
+                        a.nav-link(href='/blogposts/add') Add Blogpost
+                    li.nav-item
+                        a.nav-link(href='#') Delete
+                    li.nav-item
+                        a.nav-link(href='#') Edit
+
         .container
             block content
             br
             hr
             footer
                 p Copyright &copy 2018
+        script(src='/bower_components/jquery/dist/jquery.js')
+        script(src='/bower_components/boostrap/dist/js/bootstrap.js')
+        

@@ -1,0 +1,8 @@
+extends layout
+
+block content
+    h1= blogpost.title
+    h5 Written by #{blogpost.author}
+    p= blogpost.body
+    hr
+    a.btn.btn-primary(href='/blogpost/edit/'+blogpost._id) Edit

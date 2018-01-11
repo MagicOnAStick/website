@@ -5,4 +5,5 @@ block content
     ul.list-group
         each blogpost, i in blogposts
             //- '=' writes the variable
-            li.list-group-item= blogpost.title
+            li.list-group-item
+                a(href="/blogpost/"+blogpost._id)= blogpost.title

@@ -74,6 +74,50 @@ app.post("/blogposts/add",(req,res)=>{
     });
 });
 
+// update submit POST Route
+app.post("/blogposts/edit/:id",(req,res)=>{
+    
+    //empty json object. if the object would be 'new Blogpost()' an _id field would be there and would be updated, but is immutable which would cause an error
+    let blogpost ={};
+    blogpost.title = req.body.title;
+    blogpost.author = req.body.author;
+    blogpost.body = req.body.body;
+    
+    let query = {_id:req.params.id};
+
+    //use the model not the variable for .update
+    Blogpost.update(query,blogpost,(err)=>{
+        if (err) {
+            console.log(err);
+            return;
+        }
+        else{
+            res.redirect("/");
+        }
+    });
+});
+
+// get single blogpost
+app.get('/blogpost/:id',(req,res)=>{
+    Blogpost.findById(req.params.id, (err, blogpost)=>{
+        res.render('show_blogpost', {
+            //blogpost variable as parameter
+            blogpost: blogpost
+        });
+    }); 
+});
+
+// load edit form
+app.get('/blogpost/edit/:id',(req,res)=>{
+    Blogpost.findById(req.params.id, (err, blogpost)=>{
+        res.render('edit_blogpost', {
+            //blogpost variable as parameter
+            blogpost: blogpost,
+            title: 'Edit Blogpost'
+        });
+    }); 
+});
+
 // start server
 app.listen(3000,()=>{
     console.log("Server startet on port 3000");
