@@ -4,6 +4,10 @@ const path = require('path');
 const mongoose = require('mongoose');
 //express module for parsing html/json bodies
 const bodyParser = require('body-parser');
+//VERSION 4.3.0 throws Error (Validator.js s:75)
+//const expressValidator = require('express-validator');
+const flash = require('connect-flash');
+const session = require('express-session');
 
 // connect to db
 mongoose.connect("mongodb://localhost/blogcommander");
@@ -34,6 +38,42 @@ app.use(bodyParser.urlencoded({extend:false}));
 app.use(bodyParser.json());
 //set/add public folder
 app.use(express.static(path.join(__dirname,'public')));
+
+// Express Session Middleware
+app.use(session({
+    //TODO
+    secret: 'keyboard cat',
+    resave: true,
+    saveUninitialized: true,
+    //cookie: { secure: true }
+  }));
+
+// Express Messages Middleware
+app.use(require('connect-flash')());
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
+
+// Express Validator Middleware
+/* app.use(expressValidator({
+    errorFormatter: function(param,msg,value){
+        var namespace = param.split('.')
+        , root = namespace.shift()
+        , formParam = root;
+
+        while(namespace.length){
+            formParam += '[' + namespace.shift() + ']';
+        }
+        return{
+            param: formParam,
+            msg: msg,
+            value: value
+        };
+    }
+})); */
+
+//ROUTES
 
 // home route
 app.get("/",(req,res)=>{
@@ -69,7 +109,9 @@ app.post("/blogposts/add",(req,res)=>{
             return;
         }
         else{
-            res.redirect("/");
+            //params: 1. title (should be a bootstrap popup type) 2. The popup notification
+            req.flash('success', 'Blogpost added');
+            res.redirect('/');
         }
     });
 });
@@ -92,6 +134,7 @@ app.post("/blogposts/edit/:id",(req,res)=>{
             return;
         }
         else{
+            req.flash('success', 'Blogpost updated');
             res.redirect("/");
         }
     });

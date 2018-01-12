@@ -11,14 +11,11 @@ html
                 span.navbar-toggler-icon
             #navbarNav.collapse.navbar-collapse
                 ul.navbar-nav
-                    li.nav-item.active
+                    li.nav-item
                         a.nav-link(href='/blogposts/add') Add Blogpost
-                    li.nav-item
-                        a.nav-link(href='#') Delete
-                    li.nav-item
-                        a.nav-link(href='#') Edit
 
         .container
+            != messages('message', locals)
             block content
             br
             hr
