@@ -7,7 +7,7 @@ $(document).ready(function(){
         $.ajax({
             type: 'DELETE',
             //delete route
-            url: '/blogpost/'+id,
+            url: '/blogposts/'+id,
             success: function(response){
                 alert('Deleting Blogpost');
                 window.location.href='/';

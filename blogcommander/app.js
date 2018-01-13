@@ -73,8 +73,6 @@ app.use(function (req, res, next) {
     }
 })); */
 
-//ROUTES
-
 // home route
 app.get("/",(req,res)=>{
     let blogposts = Blogpost.find({},(err, blogposts)=>{
@@ -89,87 +87,10 @@ app.get("/",(req,res)=>{
     });
 });
 
-// add blogposts
-app.get("/blogposts/add",(req,res)=>{
-    res.render('add_blogpost',{
-        title: 'Add Blogpost'
-    });
-});
-
-// add submit POST Route
-app.post("/blogposts/add",(req,res)=>{
-    let blogpost = new Blogpost();
-    blogpost.title = req.body.title;
-    blogpost.author = req.body.author;
-    blogpost.body = req.body.body;
-    
-    blogpost.save((err)=>{
-        if (err) {
-            console.log(err);
-            return;
-        }
-        else{
-            //params: 1. title (should be a bootstrap popup type) 2. The popup notification
-            req.flash('success', 'Blogpost added');
-            res.redirect('/');
-        }
-    });
-});
-
-// update submit POST Route
-app.post("/blogposts/edit/:id",(req,res)=>{
-    
-    //empty json object. if the object would be 'new Blogpost()' an _id field would be there and would be updated, but is immutable which would cause an error
-    let blogpost ={};
-    blogpost.title = req.body.title;
-    blogpost.author = req.body.author;
-    blogpost.body = req.body.body;
-    
-    let query = {_id:req.params.id};
-
-    //use the model not the variable for .update
-    Blogpost.update(query,blogpost,(err)=>{
-        if (err) {
-            console.log(err);
-            return;
-        }
-        else{
-            req.flash('success', 'Blogpost updated');
-            res.redirect("/");
-        }
-    });
-});
-
-// get single blogpost
-app.get('/blogpost/:id',(req,res)=>{
-    Blogpost.findById(req.params.id, (err, blogpost)=>{
-        res.render('show_blogpost', {
-            //blogpost variable as parameter
-            blogpost: blogpost
-        });
-    }); 
-});
-
-// load edit form
-app.get('/blogpost/edit/:id',(req,res)=>{
-    Blogpost.findById(req.params.id, (err, blogpost)=>{
-        res.render('edit_blogpost', {
-            //blogpost variable as parameter
-            blogpost: blogpost,
-            title: 'Edit Blogpost'
-        });
-    }); 
-});
-
-app.delete('/blogpost/:id',(req,res)=>{
-    let query = {_id: req.params.id};
-    //use model to delete
-    Blogpost.remove(query,(err)=>{
-        console.log(err);
-    });
-    //request from main.js -> send response- defaultcode = 200
-    res.send("Successfully deleted Blogpost");
-});
+//Route blogposts.js FILE
+let blogposts = require('./routes/blogposts');
+//Route path to file - so any url with /blogposts+x is routed to ./routes/blogposts.js with url /blogposts/+x eg. blogposts/add
+app.use('/blogposts',blogposts);
 
 // start server
 app.listen(3000,()=>{
