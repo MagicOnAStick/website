@@ -13,9 +13,17 @@ html
                 ul.navbar-nav
                     li.nav-item
                         a.nav-link(href='/blogposts/add') Add Blogpost
+                ul.navbar-nav.ml-auto
+                    li.nav-item
+                        a.nav-link(href='/users/register') Register
+                    li.nav-item
+                        a.nav-link(href='/users/login') Login
 
         .container
             != messages('message', locals)
+            if errors
+                each error, i in errors
+                    div(class='alert alert-danger') #{error.msg}
             block content
             br
             hr

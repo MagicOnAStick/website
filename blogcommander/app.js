@@ -4,8 +4,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 //express module for parsing html/json bodies
 const bodyParser = require('body-parser');
-//VERSION 4.3.0 throws Error (Validator.js s:75)
-//const expressValidator = require('express-validator');
+const expressValidator = require('express-validator');
 const flash = require('connect-flash');
 const session = require('express-session');
 
@@ -28,8 +27,9 @@ const app = express();
 // bring in models with the same name defined in /models/blogpost
 let Blogpost = require('./models/blogpost');
 
-// load template engine
+//set 'views' to path so no /views/ is required before loading views (can directy loaded via viewname)
 app.set('views',path.join(__dirname, 'views'));
+// load template engine
 app.set('view engine','pug');
 
 //parse application/x-www-form-urlencoded
@@ -56,7 +56,7 @@ app.use(function (req, res, next) {
 });
 
 // Express Validator Middleware
-/* app.use(expressValidator({
+app.use(expressValidator({
     errorFormatter: function(param,msg,value){
         var namespace = param.split('.')
         , root = namespace.shift()
@@ -71,7 +71,7 @@ app.use(function (req, res, next) {
             value: value
         };
     }
-})); */
+}));
 
 // home route
 app.get("/",(req,res)=>{
@@ -91,6 +91,9 @@ app.get("/",(req,res)=>{
 let blogposts = require('./routes/blogposts');
 //Route path to file - so any url with /blogposts+x is routed to ./routes/blogposts.js with url /blogposts/+x eg. blogposts/add
 app.use('/blogposts',blogposts);
+//Route users.js File
+let users = require('./routes/users');
+app.use('/users',users);
 
 // start server
 app.listen(3000,()=>{

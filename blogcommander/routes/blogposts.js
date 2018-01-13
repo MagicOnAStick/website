@@ -4,6 +4,7 @@ const router = express.Router();
 // bring in models with the same name defined in /models/blogpost
 let Blogpost = require('../models/blogpost');
 
+//URLs without /blogposts/ because app.js is configured to route all requests with /blogposts/ to this file
 
 // add blogposts
 router.get("/add",(req,res)=>{
@@ -14,22 +15,38 @@ router.get("/add",(req,res)=>{
 
 // add submit POST Route
 router.post("/add",(req,res)=>{
-    let blogpost = new Blogpost();
-    blogpost.title = req.body.title;
-    blogpost.author = req.body.author;
-    blogpost.body = req.body.body;
     
-    blogpost.save((err)=>{
-        if (err) {
-            console.log(err);
-            return;
-        }
-        else{
-            //params: 1. title (should be a bootstrap popup type) 2. The popup notification
-            req.flash('success', 'Blogpost added');
-            res.redirect('/');
-        }
-    });
+    //check input with name title
+    req.checkBody('title','Title is required!').notEmpty();
+    req.checkBody('author','Author is required!').notEmpty();
+    req.checkBody('body','Body is required!').notEmpty();
+
+    // Get potential errors
+    let errors = req.validationErrors();
+    if(errors){
+        res.render('add_blogpost',{
+            //errors var for view
+            errors: errors,
+            title: 'Add Blogpost'
+        });
+    }else{
+        let blogpost = new Blogpost();
+        blogpost.title = req.body.title;
+        blogpost.author = req.body.author;
+        blogpost.body = req.body.body;
+        
+        blogpost.save((err)=>{
+            if (err) {
+                console.log(err);
+                return;
+            }
+            else{
+                //params: 1. title (should be a bootstrap popup type) 2. The popup notification
+                req.flash('success', 'Blogpost added');
+                res.redirect('/');
+            }
+        });
+    }    
 });
 
 // update submit POST Route
@@ -87,5 +104,5 @@ router.delete('/:id',(req,res)=>{
     res.send("Successfully deleted Blogpost");
 });
 
-//export router
+//export router to be available not only in this file
 module.exports = router;
