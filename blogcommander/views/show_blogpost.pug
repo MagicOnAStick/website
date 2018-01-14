@@ -2,8 +2,11 @@ extends layout
 
 block content
     h1= blogpost.title
-    h5 Written by #{blogpost.author}
+    h5 Written by #{author}
     p= blogpost.body
     hr
-    a.btn.btn-primary(href='/blogposts/edit/'+blogpost._id) Edit
-    a.btn.btn-danger.delete-blogpost(href='#',data-id=blogpost._id) Delete
+
+    if user
+        if user.id == blogpost.author
+            a.btn.btn-primary(href='/blogposts/edit/'+blogpost._id) Edit
+            a.btn.btn-danger.delete-blogpost(href='#',data-id=blogpost._id) Delete

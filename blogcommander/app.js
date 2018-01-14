@@ -90,8 +90,16 @@ app.get('*',(req,res,next)=>{
     next();
 });
 
+//Route blogposts.js FILE
+let blogposts = require('./routes/blogposts');
+//Route path to file - so any url with /blogposts+x is routed to ./routes/blogposts.js with url /blogposts/+x eg. blogposts/add
+app.use('/blogposts',blogposts);
+//Route users.js File
+let users = require('./routes/users');
+app.use('/users',users);
+
 // home route
-app.get("/",(req,res)=>{
+app.get("/",ensureAuthenticated,(req,res)=>{
     let blogposts = Blogpost.find({},(err, blogposts)=>{
         if (err) {
             console.log(err);
@@ -104,13 +112,15 @@ app.get("/",(req,res)=>{
     });
 });
 
-//Route blogposts.js FILE
-let blogposts = require('./routes/blogposts');
-//Route path to file - so any url with /blogposts+x is routed to ./routes/blogposts.js with url /blogposts/+x eg. blogposts/add
-app.use('/blogposts',blogposts);
-//Route users.js File
-let users = require('./routes/users');
-app.use('/users',users);
+function ensureAuthenticated(req,res,next){
+    if(req.isAuthenticated()){
+        //resume requests, requires next params
+        return next();
+    } else {
+        req.flash('danger', 'Please login!');
+        res.redirect('/users/login');
+    }
+}
 
 // start server
 app.listen(3000,()=>{

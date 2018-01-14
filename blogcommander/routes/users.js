@@ -71,7 +71,7 @@ router.get('/login',(req,res)=>{
 
 // Login Process
 router.post('/login', (req,res,next)=>{
-    //strategy name default is 'local', authenticate calls login() function and sets the req.user session variable
+    //strategy name default is 'local', authenticate calls login() function and sets the user-data from db into req.user session variable
     passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/users/login',

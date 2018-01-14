@@ -11,7 +11,8 @@ html
                 span.navbar-toggler-icon
             #navbarNav.collapse.navbar-collapse
                 ul.navbar-nav
-                    li.nav-item
+                    if user
+                        li.nav-item
                         a.nav-link(href='/blogposts/add') Add Blogpost
                 ul.navbar-nav.ml-auto
                     if user
