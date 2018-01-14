@@ -7,9 +7,11 @@ const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const flash = require('connect-flash');
 const session = require('express-session');
+const config = require('./config/database');
+const passport = require('passport');
 
 // connect to db
-mongoose.connect("mongodb://localhost/blogcommander");
+mongoose.connect(config.database);
 let db = mongoose.connection;
 
 db.once('open',()=>{
@@ -72,6 +74,21 @@ app.use(expressValidator({
         };
     }
 }));
+
+// Passport Config
+require('./config/passport')(passport);
+// Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+//sets the variable if any url is accessed
+app.get('*',(req,res,next)=>{
+    //req.user is set if user successfully logged in (cookie storage)
+    //create local variable 'user' can also be used in pug templates
+    res.locals.user = req.user || null;
+    //calls next middleware/route
+    next();
+});
 
 // home route
 app.get("/",(req,res)=>{

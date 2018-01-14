@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const validator = require('express-validator');
 const bcrypt = require('bcryptjs');
+const passport = require('passport');
 
 // bring in models with the same name defined in /models/user
 let User = require('../models/user');
@@ -63,8 +64,27 @@ router.post('/register',(req,res)=>{
     }
 });
 
+// Login Form
 router.get('/login',(req,res)=>{
     res.render('login');
+});
+
+// Login Process
+router.post('/login', (req,res,next)=>{
+    //strategy name default is 'local', authenticate calls login() function and sets the req.user session variable
+    passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/users/login',
+        failureFlash: true
+    })
+    //????
+    (req,res,next);
+});
+
+router.get('/logout',(req,res)=>{
+    req.logout();
+    req.flash('success', 'You are now logged out!');
+    res.redirect('/users/login');
 });
 
 module.exports = router;

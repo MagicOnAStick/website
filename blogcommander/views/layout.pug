@@ -14,10 +14,14 @@ html
                     li.nav-item
                         a.nav-link(href='/blogposts/add') Add Blogpost
                 ul.navbar-nav.ml-auto
-                    li.nav-item
-                        a.nav-link(href='/users/register') Register
-                    li.nav-item
-                        a.nav-link(href='/users/login') Login
+                    if user
+                        li.nav-item
+                            a.nav-link(href='/users/logout') Logout    
+                    else
+                        li.nav-item
+                            a.nav-link(href='/users/register') Register
+                        li.nav-item
+                            a.nav-link(href='/users/login') Login
 
         .container
             != messages('message', locals)
