@@ -36,14 +36,13 @@ app.set('view engine','pug');
 
 //parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extend:false}));
-//parse application/json
+//parse application/json - adds .body object to .req to easily access body attributes
 app.use(bodyParser.json());
-//set/add public folder
+//set/add public folder as node static folder for client stuff
 app.use(express.static(path.join(__dirname,'public')));
 
 // Express Session Middleware
 app.use(session({
-    //TODO
     secret: 'keyboard cat',
     resave: true,
     saveUninitialized: true,
@@ -112,6 +111,7 @@ app.get("/",ensureAuthenticated,(req,res)=>{
     });
 });
 
+//TODO how to use ensureAuhenticated from users.js?
 function ensureAuthenticated(req,res,next){
     if(req.isAuthenticated()){
         //resume requests, requires next params

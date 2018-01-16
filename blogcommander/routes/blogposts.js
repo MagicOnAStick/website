@@ -106,6 +106,7 @@ router.get('/edit/:id',ensureAuthenticated,(req,res)=>{
 });
 
 router.delete('/:id',(req,res)=>{
+    //req.user is there because of passportjs authorize
     if(!req.user._id){
         res.status(500).send();
     }

@@ -2,20 +2,23 @@ extends layout
 
 block content
     h1.mb-4 Register
-    form(action="/users/register", method="post")
+    form(id="registerForm")
         #form-group
             label Name: 
-            input.form-control(name="name",type="text")
+            input.form-control(name="name",type="text", id="name")
         #form-group
             label Email: 
-            input.form-control(name="email",type="text")
+            input.form-control(name="email",type="text", id="email")
         #form-group
             label Username: 
-            input.form-control(name="username", type="text")
+            input.form-control(name="username", type="text", id="username")
         #form-group
             label Password: 
-            input.form-control(name="password", type="password")
+            input.form-control(name="password", type="password", id="password")
         #form-group
             label Confirm Password: 
-            input.form-control(name="password2", type="password").mb-4        
+            input.form-control(name="password2", type="password", id="password2").mb-3
+        #form-group
+            .g-recaptcha(data-sitekey="6Lcfy0AUAAAAAGSFhB9NzvrEPimJBR3HqIR80TgT").mb-4
+        
         input.btn.btn-primary(type="submit", value="submit")
